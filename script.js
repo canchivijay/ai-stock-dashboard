@@ -6,8 +6,7 @@ async function fetchData(symbol){
 
 try{
 
-let url=`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=3mo&interval=1d`;
-
+let url=`https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v8/finance/chart/${symbol}.NS?range=3mo&interval=1d`;
 let res=await fetch(url);
 
 let data=await res.json();
