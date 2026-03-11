@@ -2,20 +2,26 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Stock Analysis Dashboard</title>
+<title>AI NSE Stock Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
 <header>
-<h1>AI Stock Analysis Dashboard</h1>
-<p>Intraday, Short-Term, Long-Term Signals</p>
-<p class="note">Use symbols like RELIANCE.NS, TCS.NS, INFY.NS</p>
+<h1>AI NSE Stock Dashboard</h1>
+<p>Realtime Analysis for Indian Stocks</p>
 </header>
 
 <section class="search">
-<input id="symbolInput" placeholder="Example: RELIANCE.NS">
+
+<input id="symbolInput" placeholder="Enter NSE stock (Example: INFY)">
 <button onclick="analyzeStock()">Analyze</button>
+
 </section>
 
 <section class="card">
@@ -25,21 +31,36 @@
 
 <section class="card">
 <h2>Indicators</h2>
+
 <p>RSI: <span id="rsi">--</span></p>
 <p>MACD: <span id="macd">--</span></p>
+
 </section>
 
 <section class="card">
 <h2>Signals</h2>
+
 <p>Intraday: <span id="intraday">--</span></p>
 <p>Short Term: <span id="shortterm">--</span></p>
 <p>Long Term: <span id="longterm">--</span></p>
+
 </section>
 
 <section class="card">
+
 <h2>Support / Resistance</h2>
+
 <p>Support: <span id="support">--</span></p>
 <p>Resistance: <span id="resistance">--</span></p>
+
+</section>
+
+<section class="card">
+
+<h2>Price Chart</h2>
+
+<canvas id="chart"></canvas>
+
 </section>
 
 <script src="script.js"></script>
