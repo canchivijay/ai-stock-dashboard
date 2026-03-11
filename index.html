@@ -2,34 +2,33 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI NSE Stock Dashboard</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<title>NSE AI Stock Dashboard</title>
 <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
 <header>
-<h1>AI NSE Stock Dashboard</h1>
-<p>Realtime Analysis for Indian Stocks</p>
+<h1>NSE AI Stock Dashboard</h1>
+<p>Simple AI Stock Analysis</p>
 </header>
 
 <section class="search">
 
-<input id="symbolInput" placeholder="Enter NSE stock (Example: INFY)">
+<input id="symbolInput" placeholder="Example: INFY">
 <button onclick="analyzeStock()">Analyze</button>
 
 </section>
 
 <section class="card">
-<h2>Live Price</h2>
+
+<h2>Latest Price</h2>
 <p id="price">--</p>
+
 </section>
 
 <section class="card">
+
 <h2>Indicators</h2>
 
 <p>RSI: <span id="rsi">--</span></p>
@@ -38,6 +37,7 @@
 </section>
 
 <section class="card">
+
 <h2>Signals</h2>
 
 <p>Intraday: <span id="intraday">--</span></p>
@@ -52,14 +52,6 @@
 
 <p>Support: <span id="support">--</span></p>
 <p>Resistance: <span id="resistance">--</span></p>
-
-</section>
-
-<section class="card">
-
-<h2>Price Chart</h2>
-
-<canvas id="chart"></canvas>
 
 </section>
 
