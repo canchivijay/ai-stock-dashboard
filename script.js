@@ -1,34 +1,32 @@
-const API_KEY = "demo"; 
-// you can replace with free key from financialmodelingprep.com
-
 async function fetchData(symbol){
 
-symbol = symbol.toUpperCase()
+symbol=symbol.toLowerCase()
 
-if(!symbol.includes(".NS")){
-symbol = symbol + ".NS"
-}
+let url=`https://stooq.com/q/d/l/?s=${symbol}.in&i=d`
 
-let url = `https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}?apikey=${API_KEY}`
+let res=await fetch(url)
 
-let res = await fetch(url)
+let text=await res.text()
 
-let data = await res.json()
+let rows=text.split("\n")
 
-if(!data.historical){
-alert("Stock not found")
-return null
-}
+rows.shift()
 
 let prices=[]
 let highs=[]
 let lows=[]
 
-for(let i=0;i<60;i++){
+for(let r of rows){
 
-prices.push(data.historical[i].close)
-highs.push(data.historical[i].high)
-lows.push(data.historical[i].low)
+let cols=r.split(",")
+
+if(cols.length>4){
+
+prices.push(parseFloat(cols[4]))
+highs.push(parseFloat(cols[2]))
+lows.push(parseFloat(cols[3]))
+
+}
 
 }
 
@@ -75,7 +73,6 @@ return ema
 function calcMACD(prices){
 
 let ema12=calcEMA(prices,12)
-
 let ema26=calcEMA(prices,26)
 
 return (ema12-ema26).toFixed(2)
@@ -87,7 +84,6 @@ function supportResistance(highs,lows,close){
 let pivot=(highs[0]+lows[0]+close)/3
 
 let resistance=(2*pivot)-lows[0]
-
 let support=(2*pivot)-highs[0]
 
 return [support.toFixed(2),resistance.toFixed(2)]
@@ -113,18 +109,18 @@ async function analyzeStock(){
 let symbol=document.getElementById("symbolInput").value.trim()
 
 if(!symbol){
-alert("Enter NSE stock")
+
+alert("Enter stock symbol")
+
 return
+
 }
 
 let data=await fetchData(symbol)
 
-if(!data) return
-
 let price=data.prices[0]
 
 let rsi=calcRSI(data.prices)
-
 let macd=calcMACD(data.prices)
 
 let sr=supportResistance(data.highs,data.lows,price)
