@@ -1,20 +1,18 @@
 async function fetchData(symbol){
 
-symbol=symbol.toLowerCase()
+symbol = symbol.toLowerCase()
 
-let url=`https://stooq.com/q/d/l/?s=${symbol}.in&i=d`
+let url = `https://stooq.com/q/d/l/?s=${symbol}.in&i=d`
 
-let res=await fetch(url)
+let res = await fetch(url)
 
-let text=await res.text()
+let text = await res.text()
 
-let rows=text.split("\n")
+let rows = text.split("\n")
 
 rows.shift()
 
 let prices=[]
-let highs=[]
-let lows=[]
 
 for(let r of rows){
 
@@ -23,14 +21,12 @@ let cols=r.split(",")
 if(cols.length>4){
 
 prices.push(parseFloat(cols[4]))
-highs.push(parseFloat(cols[2]))
-lows.push(parseFloat(cols[3]))
 
 }
 
 }
 
-return {prices,highs,lows}
+return prices.reverse()
 
 }
 
@@ -73,34 +69,50 @@ return ema
 function calcMACD(prices){
 
 let ema12=calcEMA(prices,12)
+
 let ema26=calcEMA(prices,26)
 
 return (ema12-ema26).toFixed(2)
 
 }
 
-function supportResistance(highs,lows,close){
+function aiSignal(rsi,macd){
 
-let pivot=(highs[0]+lows[0]+close)/3
+if(rsi<35 && macd>0) return "BUY"
 
-let resistance=(2*pivot)-lows[0]
-let support=(2*pivot)-highs[0]
+if(rsi>65 && macd<0) return "SELL"
 
-return [support.toFixed(2),resistance.toFixed(2)]
+return "HOLD"
 
 }
 
-function signal(rsi,macd){
+let chart
 
-let intraday="HOLD"
-let shortTerm="HOLD"
-let longTerm="HOLD"
+function drawChart(prices){
 
-if(rsi<35 && macd>0) intraday="BUY"
-if(rsi>60 && macd>0) shortTerm="BUY"
-if(macd>1) longTerm="BUY"
+let ctx=document.getElementById("chart")
 
-return [intraday,shortTerm,longTerm]
+if(chart) chart.destroy()
+
+chart=new Chart(ctx,{
+
+type:"line",
+
+data:{
+
+labels:prices.map((_,i)=>i),
+
+datasets:[{
+
+label:"Price",
+
+data:prices
+
+}]
+
+}
+
+})
 
 }
 
@@ -110,30 +122,30 @@ let symbol=document.getElementById("symbolInput").value.trim()
 
 if(!symbol){
 
-alert("Enter stock symbol")
+alert("Enter stock")
 
 return
 
 }
 
-let data=await fetchData(symbol)
+let prices=await fetchData(symbol)
 
-let price=data.prices[0]
+let price=prices[prices.length-1]
 
-let rsi=calcRSI(data.prices)
-let macd=calcMACD(data.prices)
+let rsi=calcRSI(prices)
 
-let sr=supportResistance(data.highs,data.lows,price)
+let macd=calcMACD(prices)
 
-let signals=signal(rsi,macd)
+let signal=aiSignal(rsi,macd)
 
 document.getElementById("price").innerText=price
+
 document.getElementById("rsi").innerText=rsi
+
 document.getElementById("macd").innerText=macd
-document.getElementById("intraday").innerText=signals[0]
-document.getElementById("shortterm").innerText=signals[1]
-document.getElementById("longterm").innerText=signals[2]
-document.getElementById("support").innerText=sr[0]
-document.getElementById("resistance").innerText=sr[1]
+
+document.getElementById("signal").innerText=signal
+
+drawChart(prices)
 
 }
