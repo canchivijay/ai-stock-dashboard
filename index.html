@@ -1,57 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NSE AI Stock Dashboard</title>
+
+<title>AI Trading Terminal</title>
+
 <link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
 
 <header>
-<h1>NSE AI Stock Dashboard</h1>
-<p>Simple AI Stock Analysis</p>
+
+<h1>AI Trading Terminal</h1>
+
+<p>Indian Stock Analysis Engine</p>
+
 </header>
 
 <section class="search">
 
-<input id="symbolInput" placeholder="Example: INFY">
+<input id="symbolInput" placeholder="Enter Stock (Example: INFY)">
 <button onclick="analyzeStock()">Analyze</button>
 
 </section>
 
-<section class="card">
+<section class="grid">
 
-<h2>Latest Price</h2>
+<div class="card">
+
+<h3>Price</h3>
+
 <p id="price">--</p>
 
+</div>
+
+<div class="card">
+
+<h3>RSI</h3>
+
+<p id="rsi">--</p>
+
+</div>
+
+<div class="card">
+
+<h3>MACD</h3>
+
+<p id="macd">--</p>
+
+</div>
+
+<div class="card">
+
+<h3>Signal</h3>
+
+<p id="signal">--</p>
+
+</div>
+
 </section>
 
-<section class="card">
+<section class="chart">
 
-<h2>Indicators</h2>
-
-<p>RSI: <span id="rsi">--</span></p>
-<p>MACD: <span id="macd">--</span></p>
-
-</section>
-
-<section class="card">
-
-<h2>Signals</h2>
-
-<p>Intraday: <span id="intraday">--</span></p>
-<p>Short Term: <span id="shortterm">--</span></p>
-<p>Long Term: <span id="longterm">--</span></p>
-
-</section>
-
-<section class="card">
-
-<h2>Support / Resistance</h2>
-
-<p>Support: <span id="support">--</span></p>
-<p>Resistance: <span id="resistance">--</span></p>
+<canvas id="chart"></canvas>
 
 </section>
 
